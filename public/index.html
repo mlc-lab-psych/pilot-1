@@ -28,8 +28,8 @@
 
         async function fetchData() {
             try {
-                const response = await fetch('https://alive-2b.vercel.app/get-data'); // Make the GET request
-                // const response = await fetch('http://localhost:3000/get-data'); // Make the GET request
+                // const response = await fetch('https://alive-2b.vercel.app/get-data'); // Make the GET request
+                const response = await fetch('http://localhost:3000/get-data'); // Make the GET request
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -47,7 +47,10 @@
         }
 
         function initializeJsPsych(){
-            const jsPsych = initJsPsych();
+            const jsPsych = initJsPsych({
+                show_progress_bar: true,
+                auto_update_progress_bar: false
+            });
 
             function getParamFromURL(name) {
                 name = name.replace(/\[/, "\\[").replace(/]/, "\\]");
@@ -80,7 +83,7 @@
             const welcome_block = {
                 type: jsPsychHtmlKeyboardResponse,
                 version:"",
-                stimulus: "<p>Welcome to the experiment.</p><p>Press any key to begin.</p>"
+                stimulus: "<p>Welcome to the experiment.</p><p>Press any key to begin.</p>",
             };
 
             timeline.push(welcome_block)
@@ -215,12 +218,12 @@
                     "<br>" +
                     "<p>Some images contain more than one thing, technically speaking. Focus on the main thing in each image.</p>" +
                     "<p>Be as accurate and as fast as you can. You will have at most 1 second to respond.</p>" +
-                    "<p>Between each image, you will see a small cross and a picture of static. Look at these images but do not respond to them.</p>" +
+                    "<p>Between each image, you will see a small cross. Look at the cross but do not respond to it.</p>" +
                     "<br>" +
                     "<p>You will see 140 images.</p>" +
                     "<br>"+ "<br>" +
                     "<p>Press any key to begin.</p>",
-                post_trial_gap: 2000,
+                post_trial_gap: 2000
             };
 
             timeline.push(instructions);
@@ -233,6 +236,9 @@
                 trial_duration: () => jsPsych.randomization.sampleWithoutReplacement([500, 650, 800, 950, 1100, 1250, 1400, 1500], 1)[0],
                 data: { test_part: 'fixation' }
             };
+
+            let n_trials = 140;
+            let current_trials = 0;
 
             const test = {
                 type: jsPsychCategorizeImage,
@@ -256,21 +262,15 @@
                     order: jsPsych.timelineVariable('order')
                 },
                 on_finish: function(data) {
+                    current_trials += 1
+                    jsPsych.progressBar.progress = current_trials / n_trials;
+
                     data.correct = jsPsych.pluginAPI.compareKeys(data.correct_response, data.response);
                 }
             };
 
-            const mask = {
-                type: jsPsychImageKeyboardResponse,
-                version:"",
-                stimulus: 'mask.jpg',
-                choices: "NO_KEYS",
-                trial_duration: 500,
-                data: {test_part: 'mask'}
-            }
-
             const test_procedure = {
-                timeline: [fixation, test, mask],
+                timeline: [fixation, test],
                 timeline_variables: test_stimuli,
                 randomize_order: true
             };
@@ -301,8 +301,8 @@
 
         async function sendResults(results) {
             try {
-                // const response = await fetch('http://localhost:3000/submit-results', {
-                const response = await fetch('https://alive-2b.vercel.app/submit-results', {
+                const response = await fetch('http://localhost:3000/submit-results', {
+                // const response = await fetch('https://alive-2b.vercel.app/submit-results', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
