@@ -10,6 +10,8 @@
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-categorize-image@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@1.0.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey@1.0.1"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css">
 
     <script>
         console.warn = () => {};
@@ -220,7 +222,7 @@
                     "<p>Be as accurate and as fast as you can. You will have at most 1 second to respond.</p>" +
                     "<p>Between each image, you will see a small cross. Look at the cross but do not respond to it.</p>" +
                     "<br>" +
-                    "<p>You will see 140 images.</p>" +
+                    "<p>You will see 320 images.</p>" +
                     "<br>"+ "<br>" +
                     "<p>Press any key to begin.</p>",
                 post_trial_gap: 2000
@@ -237,7 +239,7 @@
                 data: { test_part: 'fixation' }
             };
 
-            let n_trials = 140;
+            let n_trials = 320;
             let current_trials = 0;
 
             const test = {
@@ -258,8 +260,7 @@
                     test_part: jsPsych.timelineVariable('test_part'),
                     url: jsPsych.timelineVariable('url'),
                     category: jsPsych.timelineVariable('category'),
-                    correct_response: jsPsych.timelineVariable('correct_response'),
-                    order: jsPsych.timelineVariable('order')
+                    correct_response: jsPsych.timelineVariable('correct_response')
                 },
                 on_finish: function(data) {
                     current_trials += 1
@@ -270,7 +271,7 @@
             };
 
             const test_procedure = {
-                timeline: [fixation, test],
+                timeline: [test],
                 timeline_variables: test_stimuli,
                 randomize_order: true
             };
@@ -278,9 +279,35 @@
             timeline.push(test_procedure);
 
             const comment_block = {
-                type: jsPsychSurveyText,
-                preamble: "<p>You have completed the task.</p>",
-                questions: [{ prompt: "Do you have any comments about the study?", name: 'comments', columns: 80 }],
+                type: jsPsychSurvey,
+                survey_json: {
+                    showQuestionNumbers: false,
+                    elements:
+                        [
+                            {
+                                type: 'text',
+                                title: "Do you have any comments about the study?",
+                                name: 'comments',
+                                placeholder: 'Comments here',
+                                columns: 80,
+                                isRequired: true
+                            },
+                            {
+                                type: 'radiogroup',
+                                title: "Did you experience any technical difficulties with this task?",
+                                name: 'technical_difficulties',
+                                choices: ["Yes", "No"],
+                                isRequired: true
+                            },
+                            {
+                                type: 'text',
+                                title: "If yes, please describe your experience.",
+                                name: 'difficulty_description',
+                                placeholder: 'Describe any technical difficulties',
+                                required: false
+                            }
+
+                        ]},
                 on_finish: function(data) {
                     sendResults(jsPsych.data.get()['trials']);
                 }
@@ -324,9 +351,6 @@
         window.onload = function() {
             fetchData();
         }
-
-
-
     </script>
 </head>
 <body>
