@@ -100,24 +100,27 @@
                     }
                     </style>
                     <div style="max-width: 1200px">
-                            <label style="text-align: left !important;">The research study you are about to do is sponsored by Rochester Institute of Technology (RIT). It is part of protocol #02111723. The task you are asked to do involves making simple responses to images, words, and sentences. For example, you may be asked to rate a pair of images on their similarity or to indicate how true you think a given sentence is. You may also be asked to complete a questionnaire about your background and your attitudes and interests. More detailed instructions for this specific task will be provided on the next screen.
-
-<br><br>This task has no direct benefits. We do not anticipate any psychosocial, social, or legal risks. Participants may become fatigued or frustrated due to the length of the study. The responses you submit as part of this task will be stored on a secure server and accessible only to researchers who have been approved by RIT. Processed data with all identifiers removed could be used for future research studies or distributed to another investigator for future research studies without additional informed consent from the subject or a legally authorized representative.
-
-<br><br>You are free to decline to participate, to end participation at any time for any reason, or to refuse to answer any individual question without penalty or loss of earned compensation. We will not retain data from partial responses. If you would like to withdraw your data after participating, you may send an email to lrrgsh@rit.edu or complete this form which will allow you to make a request anonymously.
-
-<br><br>If you have any questions or concerns about this task, please contact the principal investigator: Prof. Lilia Rissman at lrrgsh@rit.edu.
-
-<br><br>If you are not satisfied with response of the research team, have more questions, or want to talk with someone about your rights as a research participant, you should contact RIT’s Human Subjects Research Office at 585-475-7673, hmfsrs@rit.edu.
-
-<br><br>If you agree to participate, please click "I agree" below. If not, please close your browser window now.</label><br><br>
-                            <input type="checkbox" id="agree" name="consent" value="Agreed" required>
-                            <label for="agree">I agree</label><br><br>
+                        <label style="text-align: left !important;">The research study you are about to do is sponsored by Rochester Institute of Technology (RIT). It is part of protocol #02111723. The task you are asked to do involves making simple responses to images, words, and sentences. For example, you may be asked to rate a pair of images on their similarity or to indicate how true you think a given sentence is. You may also be asked to complete a questionnaire about your background and your attitudes and interests. More detailed instructions for this specific task will be provided on the next screen.
+                        <br><br>This task has no direct benefits. We do not anticipate any psychosocial, social, or legal risks. Participants may become fatigued or frustrated due to the length of the study. The responses you submit as part of this task will be stored on a secure server and accessible only to researchers who have been approved by RIT. Processed data with all identifiers removed could be used for future research studies or distributed to another investigator for future research studies without additional informed consent from the subject or a legally authorized representative.
+                        <br><br>You are free to decline to participate, to end participation at any time for any reason, or to refuse to answer any individual question without penalty or loss of earned compensation. We will not retain data from partial responses. If you would like to withdraw your data after participating, you may send an email to lrrgsh@rit.edu or complete this form which will allow you to make a request anonymously.
+                        <br><br>If you have any questions or concerns about this task, please contact the principal investigator: Prof. Lilia Rissman at lrrgsh@rit.edu.
+                        <br><br>If you are not satisfied with response of the research team, have more questions, or want to talk with someone about your rights as a research participant, you should contact RIT’s Human Subjects Research Office at 585-475-7673, hmfsrs@rit.edu.
+                        <br><br>If you agree to participate, please click "I agree" below. If not, please close your browser window now.</label><br><br>
+                        <input type="checkbox" id="agree" name="consent" value="Agreed" required>
+                        <label for="agree">I agree</label><br><br>
                     </div>
                 `
             }
 
             timeline.push(consent)
+
+            const demographic_message = {
+                type: jsPsychHtmlKeyboardResponse,
+                version:"",
+                stimulus: "<p>You will complete a detailed demographic questionnaire and then do a task deciding whether various things are alive.</p><p>Press any key to begin.</p>",
+            };
+
+            timeline.push(demographic_message)
 
             const demographics = {
                 type: jsPsychSurveyHtmlForm,
@@ -209,6 +212,270 @@
             }
 
             timeline.push(demographics_two)
+
+            const demographics_three = {
+                type: jsPsychSurveyHtmlForm,
+                preamble: '<h2>Demographic Information</h2>',
+                html: `
+                    <style>
+                        .hidden {
+                          display: none;
+                        }
+                        .slider-labels {
+                          display: flex;
+                          justify-content: space-between;
+                        }
+                        .required {
+                          color: red;
+                        }
+                         .container {
+                            display: flex;
+                            justify-content: center;
+                          }
+                          .column {
+                            width: 45%;
+                          }
+                          .column input[type="text"], .column input[type="radio"], .column input[type="checkbox"] {
+                            margin-top: 5px;
+                            margin-bottom: 15px;
+                          }
+                    </style>
+                    <div class="container">
+                        <div class="column">
+                            <label>Do you practice any religion or identify with any religious group? <span class="required">*</span></label><br>
+                            <input type="radio" name="religion" value="yes" required> Yes
+                            <input type="radio" name="religion" value="no" required> No<br>
+
+                            <div id="religion-details" class="hidden">
+                              <label>Which religion(s)?</label><br>
+                              <input type="text" name="religion-details"><br>
+                            </div><br>
+
+                            <label>On a scale from 1-5, indicate whether you consider yourself a spiritual person: <span class="required">*</span></label><br>
+                            <input type="range" name="spiritual" min="1" max="5" required>
+                            <div class="slider-labels">
+                              <span>Not at all spiritual</span>
+                              <span>Very spiritual</span>
+                            </div><br>
+
+                            <label>On a scale from 1-5, how conservative/liberal are you politically? Social issues: <span class="required">*</span></label><br>
+                            <input type="range" name="social-issues" min="1" max="5" required>
+                            <div class="slider-labels">
+                              <span>Very conservative</span>
+                              <span>Very liberal</span>
+                            </div><br>
+
+                            <label>Economic issues: <span class="required">*</span></label><br>
+                            <input type="range" name="economic-issues" min="1" max="5" required>
+                            <div class="slider-labels">
+                              <span>Very conservative</span>
+                              <span>Very liberal</span>
+                            </div>
+                        </div>
+                  </div>
+                `,
+                button_label: 'Continue',
+                on_load: () => {
+                    // Get references to the religion question and details input
+                    const religionRadios = document.getElementsByName('religion');
+                    const religionDetails = document.getElementById('religion-details');
+
+                    // Add event listeners to show/hide the religion-details input
+                    religionRadios.forEach((radio) => {
+                        radio.addEventListener('change', () => {
+                            if (radio.value === 'yes') {
+                                religionDetails.classList.remove('hidden');
+                            } else {
+                                religionDetails.classList.add('hidden');
+                            }
+                        });
+                    });
+                }
+            }
+
+            timeline.push(demographics_three)
+
+            const demographics_four = {
+                type: jsPsychSurveyHtmlForm,
+                preamble: '<h2>Demographic Information</h2>',
+                html: `
+                    <style>
+                        .hidden {
+                          display: none;
+                        }
+                        .slider-labels {
+                          display: flex;
+                          justify-content: space-between;
+                        }
+                        .required {
+                          color: red;
+                        }
+                         .container {
+                            display: flex;
+                            justify-content: center;
+                          }
+                          .column {
+                            width: 55%;
+                          }
+                          .column input[type="text"], .column input[type="radio"], .column input[type="checkbox"] {
+                            margin-top: 5px;
+                            margin-bottom: 15px;
+                          }
+                    </style>
+                    <div class="container">
+                        <div class="column">
+                        <legend>Education and Work</legend>
+                          <label>If you attended college, what subjects did you focus on? List no more than three.</label><br>
+                          <input type="text" name="college-subject1">
+                          <input type="text" name="college-subject2">
+                          <input type="text" name="college-subject3"><br>
+
+                          <label>If you attended school after college, what subjects did you focus on? List no more than three.</label><br>
+                          <input type="text" name="post-college-subject1">
+                          <input type="text" name="post-college-subject2">
+                          <input type="text" name="post-college-subject3"><br>
+
+                          <label>What do you do for a living? <span class="required">*</span></label><br>
+                          <input type="text" name="job" required><br>
+
+                          <label>On a scale from 1-5, indicate how much you use knowledge of ecology and nature in your work: <span class="required">*</span></label><br>
+                          <input type="range" name="ecology-use" min="1" max="5" required>
+                          <div class="slider-labels">
+                            <span>Never</span>
+                            <span>Often</span>
+                          </div><br>
+
+                          <label>On a scale from 1-5, indicate how interested you are in learning about ecology and nature: <span class="required">*</span></label><br>
+                          <input type="range" name="ecology-interest" min="1" max="5" required>
+                          <div class="slider-labels">
+                            <span>Not at all</span>
+                            <span>Very Much</span>
+                          </div>
+                          </div>
+                          </div>
+                `,
+                button_label: 'Continue'
+            }
+
+            timeline.push(demographics_four)
+
+            const demographics_five = {
+                type: jsPsychSurveyHtmlForm,
+                preamble: '<h2>Demographic Information</h2>',
+                html: `
+        <style>
+           .hidden {
+                display: none;
+            }
+            .required {
+                color: red;
+            }
+            .container {
+                display: flex;
+                justify-content: center;
+            }
+            .column {
+                width: 55%;
+            }
+            .column input[type="text"], .column input[type="radio"],
+            .column input[type="checkbox"], .column input[type="number"] {
+                margin-top: 5px;
+                margin-bottom: 15px;
+            }
+           .column input[type="number"]{
+                width:150px;
+           }
+        </style>
+        <div class="container">
+            <div class="column">
+                <legend>Living Environment</legend>
+                <div class="living-environment">
+                    <label>What is your current ZIP Code? If you prefer not to say, type “prefer not to say” <span class="required">*</span></label><br>
+                    <input type="text" name="zip-code" required><br>
+
+                    <label>
+                        Estimate what percentage of your life you have lived in the following environments.
+                        Provide a number from 0-100 in each of the text boxes.
+                    </label><br/><br/>
+                    <input max="100" min="0" type="number" name="urban-large-city" placeholder="Urban/larger city" required><br>
+                    <input max="100" min="0" type="number" name="urban-small-city" placeholder="Urban/smaller city" required><br>
+                    <input max="100" min="0" type="number" name="suburban" placeholder="Suburban" required><br>
+                    <input max="100" min="0" type="number" name="small-town-farmland" placeholder="Small town surrounded by farmland" required><br>
+                    <input max="100" min="0" type="number" name="small-town-wildlands" placeholder="Small town surrounded by wild lands (e.g., forest, desert, wetland)" required><br>
+                    <input max="100" min="0" type="number" name="farmland" placeholder="Farmland" required><br>
+                    <input max="100" min="0" type="number" name="wildlands" placeholder="Wild lands (e.g., forest, desert, wetland)" required><br>
+                    <input max="100" min="0" type="text" name="other-environment" placeholder="Other (fill in the blank)"><br>
+                    <span id="validation-message-living" class="hidden" style="color: red;">The percentages must add up to 100.</span><br>
+                </div>
+
+                <label>Estimate what percentage of your CHILDHOOD you have lived in the following environments (birth to age 18). <span class="required">*</span></label><br>
+                <div class="childhood-environment"><br/><br/>
+                    <input max="100" min="0" type="number" name="urban-large-city" placeholder="Urban/larger city" required><br>
+                    <input max="100" min="0" type="number" name="urban-small-city" placeholder="Urban/smaller city" required><br>
+                    <input max="100" min="0" type="number" name="suburban" placeholder="Suburban" required><br>
+                    <input max="100" min="0" type="number" name="small-town-farmland" placeholder="Small town surrounded by farmland" required><br>
+                    <input max="100" min="0" type="number" name="small-town-wildlands" placeholder="Small town surrounded by wild lands (e.g., forest, desert, wetland)" required><br>
+                    <input max="100" min="0" type="number" name="farmland" placeholder="Farmland" required><br>
+                    <input max="100" min="0" type="number" name="wildlands" placeholder="Wild lands (e.g., forest, desert, wetland)" required><br>
+                    <input max="100" min="0" type="text" name="other-environment" placeholder="Other (fill in the blank)"><br>
+                    <span id="validation-message-childhood" class="hidden" style="color: red;">The percentages must add up to 100.</span><br>
+                </div>
+
+                <label>Including all members of your household, what is your income level? If you are a dependent college student, report your family’s income. <span class="required">*</span></label><br>
+                <input type="radio" name="income-level" value="less-than-30k" required> Less than $30,000<br>
+                <input type="radio" name="income-level" value="30k-50k" required> $30,000 - $50,000<br>
+                <input type="radio" name="income-level" value="50k-75k" required> $50,001 - $75,000<br>
+                <input type="radio" name="income-level" value="75k-100k" required> $75,001 - $100,000<br>
+                <input type="radio" name="income-level" value="100k-200k" required> $100,001 - $200,000<br>
+                <input type="radio" name="income-level" value="over-200k" required> Over $200,000<br>
+                <input type="radio" name="income-level" value="prefer-not-to-say" required> Prefer not to say<br><br>
+
+                <label>How many people live in your household? If you are a dependent college student, report the number of people in your immediate family. <span class="required">*</span></label><br>
+                <input type="number" name="household-size" required><br>
+
+                <label>Do you receive government financial assistance (e.g., disability)? <span class="required">*</span></label><br>
+                <input type="radio" name="gov-assistance" value="yes" required> Yes<br>
+                <input type="radio" name="gov-assistance" value="no" required> No<br>
+                <input type="radio" name="gov-assistance" value="prefer-not-to-say" required> Prefer not to say<br>
+            </div>
+        </div>
+    `,
+    button_label: 'Continue',
+    on_load: () => {
+        function validatePercentages(sectionClass, validationMessageId) {
+            const inputs = document.querySelectorAll(`${sectionClass} input[type="number"]`);
+            const validationMessage = document.getElementById(validationMessageId);
+
+            // Add event listeners to all inputs in the section
+            inputs.forEach((input) => {
+                input.addEventListener("input", () => {
+                    let sum = 0;
+
+                    // Calculate the total sum of the values
+                    inputs.forEach((inp) => {
+                        const value = parseInt(inp.value, 10);
+                        if (!isNaN(value)) {
+                            sum += value;
+                        }
+                    });
+
+                    // Show or hide the validation message
+                    if (sum === 100) {
+                        validationMessage.classList.add("hidden");
+                    } else {
+                        validationMessage.classList.remove("hidden");
+                    }
+                });
+            });
+        }
+
+        // Apply validation to both "Living Environment" and "Childhood Environment" sections
+        validatePercentages(".living-environment", "validation-message-living");
+        validatePercentages(".childhood-environment", "validation-message-childhood");
+    }
+    };
+
+            timeline.push(demographics_five)
 
             const instructions = {
                 type: jsPsychHtmlKeyboardResponse,
@@ -318,6 +585,7 @@
             const end_block = {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: '<p>Thanks for participating!</p>' +
+                    '<p>If you work on this task is approved, you will be invited to participate in Part 2 of the study.</p>' +
                     '<p><a href="https://app.prolific.com/submissions/complete?cc=CYIS3IDD">Click here to return to Prolific and complete the study</a>.</p>',
                 choices: "NO_KEYS",
             };
