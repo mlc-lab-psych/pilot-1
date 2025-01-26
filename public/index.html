@@ -376,7 +376,7 @@
                 justify-content: center;
             }
             .column {
-                width: 55%;
+                width: 70%;
             }
             .column input[type="text"], .column input[type="radio"],
             .column input[type="checkbox"], .column input[type="number"] {
@@ -398,26 +398,42 @@
                         Estimate what percentage of your life you have lived in the following environments.
                         Provide a number from 0-100 in each of the text boxes.
                     </label><br/><br/>
+                    <label> Urban/Larger City: </label>
                     <input max="100" min="0" type="number" name="urban-large-city" placeholder="Urban/larger city" required><br>
+                     <label> Urban/Smaller City: </label>
                     <input max="100" min="0" type="number" name="urban-small-city" placeholder="Urban/smaller city" required><br>
+                    <label> Suburban: </label>
                     <input max="100" min="0" type="number" name="suburban" placeholder="Suburban" required><br>
+                    <label>Small town surrounded by farmland:</label>
                     <input max="100" min="0" type="number" name="small-town-farmland" placeholder="Small town surrounded by farmland" required><br>
+                    <label> Small town surrounded by wild lands (e.g., forest, desert, wetland): </label>
                     <input max="100" min="0" type="number" name="small-town-wildlands" placeholder="Small town surrounded by wild lands (e.g., forest, desert, wetland)" required><br>
+                    <label> Farmland: </label>
                     <input max="100" min="0" type="number" name="farmland" placeholder="Farmland" required><br>
+                    <label>Wild lands (e.g., forest, desert, wetland):</label>
                     <input max="100" min="0" type="number" name="wildlands" placeholder="Wild lands (e.g., forest, desert, wetland)" required><br>
+                    <label>Other:</label>
                     <input max="100" min="0" type="text" name="other-environment" placeholder="Other (fill in the blank)"><br>
                     <span id="validation-message-living" class="hidden" style="color: red;">The percentages must add up to 100.</span><br>
                 </div>
 
                 <label>Estimate what percentage of your CHILDHOOD you have lived in the following environments (birth to age 18). <span class="required">*</span></label><br>
                 <div class="childhood-environment"><br/><br/>
+                    <label> Urban/Larger City: </label>
                     <input max="100" min="0" type="number" name="urban-large-city-childhood" placeholder="Urban/larger city" required><br>
+                    <label> Urban/Smaller City: </label>
                     <input max="100" min="0" type="number" name="urban-small-city-childhood" placeholder="Urban/smaller city" required><br>
+                    <label> Suburban: </label>
                     <input max="100" min="0" type="number" name="suburban-childhood" placeholder="Suburban" required><br>
+                     <label>Small town surrounded by farmland:</label>
                     <input max="100" min="0" type="number" name="small-town-farmland-childhood" placeholder="Small town surrounded by farmland" required><br>
+                    <label> Small town surrounded by wild lands (e.g., forest, desert, wetland): </label>
                     <input max="100" min="0" type="number" name="small-town-wildlands-childhood" placeholder="Small town surrounded by wild lands (e.g., forest, desert, wetland)" required><br>
+                     <label> Farmland: </label>
                     <input max="100" min="0" type="number" name="farmland-childhood" placeholder="Farmland" required><br>
+                    <label>Wild lands (e.g., forest, desert, wetland):</label>
                     <input max="100" min="0" type="number" name="wildlands-childhood" placeholder="Wild lands (e.g., forest, desert, wetland)" required><br>
+                     <label>Other:</label>
                     <input max="100" min="0" type="text" name="other-environment-childhood" placeholder="Other (fill in the blank)"><br>
                     <span id="validation-message-childhood" class="hidden" style="color: red;">The percentages must add up to 100.</span><br>
                 </div>
